@@ -2,73 +2,69 @@
 
 # Session Log
 
-<a id="duckdb-jsonl-storage"></a>
-### Chose DuckDB + JSONL as the storage format
-
-**Entry date:** 2026-09-21
-
-**Done:** Adopted DuckDB's EXPORT DATABASE layout (schema.sql, load.sql, one JSON-lines file per table) as the on-disk format for text-as-data, edited via SQL and canonicalized back to git-diffable files.
-
-**Considered:** Doltgres, Dolt, gitsheets, GlueSQL, SQLite + sqlite-diffable.
-
-**Rejected:** Doltgres/Dolt hide data history behind a non-file-visible git ref, unreadable in a PR. gitsheets has no SQL or joins. GlueSQL reinvents a SQL engine with no ALTER TABLE support, more machinery than the job needed.
-
-
-<a id="extract-template-from-working-repo"></a>
-### Extracted a template from a working repo, not designed one first
-
-**Entry date:** 2026-09-21
-
-**Done:** Built the real content repo (software-engineering-canon, from design-canon) first, then extracted the proven tooling into this template once it had actually been used.
-
-**Considered:** Designing the template repo first, in the abstract.
-
-**Rejected:** An abstraction is only right once it has met a real case - designing the template first risked encoding assumptions that would not survive contact with real content.
-
-
-<a id="switch-subtree-to-subrepo"></a>
-### Switched .tad/ from git subtree to git subrepo
+<a id="reflect-on-subtree-experience"></a>
+### Reflected on the tad/git-subrepo work and proposed a fork-based package manager
 
 **Entry date:** 2026-09-22
 
-**Done:** Vendored .tad/ as a git subrepo instead of a git subtree, after testing both against the same real engine update.
+**Done:** After building and battle-testing the tad/git-subrepo system, proposed a different but related system: fork each dependency into an owned repo, add an additive file structure, and automate the fork/sync/patch-back loop. Researched prior art first rather than assuming it was novel.
 
-**Considered:** Continuing with git subtree (the original choice).
+**Considered:** Continuing to extend the tad/subrepo approach itself for third-party dependencies.
 
-**Rejected:** subrepo writes one commit per sync instead of subtree's two, and tracks the pinned commit explicitly in .gitrepo instead of a squash-commit trailer subtree buries in commit history.
-
-
-<a id="decline-to-fork-git-subrepo"></a>
-### Declined to fork git-subrepo for custom commit messages
-
-**Entry date:** 2026-09-22
-
-**Done:** Verified directly that git subrepo clone/pull/push already accept -m/--message and it fully replaces the tool's auto-generated message, with .gitrepo (not the commit message) tracking state.
-
-**Considered:** Forking ingydotnet/git-subrepo and patching it to prompt for a commit message.
-
-**Rejected:** Unnecessary: the flag already existed. Forking would mean taking on indefinite maintenance of a bash-script fork for a feature that shipped already.
+**Rejected:** tad/subrepo solves "distribute code we originate across our own repos" - a different problem from "own and patch code we do not originate." Kept both rather than merging them.
 
 
-<a id="tag-dist-for-pinning"></a>
-### Tagged the dist branch itself to enable version pinning
+<a id="name-rejected-gita"></a>
+### Rejected the name "gita" for a naming collision
 
 **Entry date:** 2026-09-22
 
-**Done:** Added a release.yml step that tags dist as dist/vX.Y.Z right after release-please tags main, giving consumers a pinned, engine-only ref instead of the moving dist branch.
-
-**Considered:** Reusing release-please's own vX.Y.Z tag on main for pinning.
-
-**Rejected:** That tag's tree contains tad-engine's own governance files (commitlint config, CHANGELOG.md), exactly the clutter dist exists to avoid; a same-named tag on dist would also collide with it (git's tag namespace is repo-wide) - found by actually running a release, not by review, and fixed by namespacing as dist/vX.Y.Z.
+**Done:** Checked before committing to the name and found nosarthur/gita (1,600+ stars, popular, active) already exists as an unrelated multi-repo git CLI tool.
 
 
-<a id="backlog-as-a-table"></a>
-### Adopted a backlog table as a standing convention
+<a id="name-chosen-rhizoid"></a>
+### Named the project Rhizoid, offshoots rhizoid-cuttings (rhizcut)
 
 **Entry date:** 2026-09-22
 
-**Done:** Every project built this way keeps a backlog table (status: open/in-progress/done), rendered to its own page the same as any other content.
+**Done:** "Rhizoid" was picked from the Rhizome ecosystem - the literal botanical term for "resembles a rhizome, simpler," matching the stated framing of this project as a simpler offshoot of Rhizome. Checked for collisions before committing (none found). Individual managed dependencies are "rhizoid-cuttings" (rhizcut), from the horticultural cutting - a piece rooted separately from its parent, independent from then on.
 
-**Considered:** A separate issue tracker, or a free-form Markdown TODO file.
 
-**Rejected:** Either breaks the property the rest of the system relies on: everything queryable, versioned, and diffable in the same place, not split across tools.
+<a id="rustnix-first-then-rhizoid"></a>
+### Upgraded rustnix into a proper template before generating rhizoid from it
+
+**Entry date:** 2026-09-22
+
+**Done:** Added CI (fmt/clippy/test/doc/MSRV), release-plz + cliff.toml, PR-title linting, and a tests/ scaffold to grenudi/rustnix, mirroring argenv-opencommons/argenv's proven setup, marked it as a GitHub template, then generated git-rhizoid/rhizoid from it - same sequence as text-as-data-template before software-engineering-canon.
+
+**Considered:** Building the CI/release setup directly in the rhizoid repo instead.
+
+**Rejected:** Any other future Rust project benefits from the same upgrade to rustnix, not just this one.
+
+
+<a id="mold-linker-bug"></a>
+### Found and fixed a real CI-breaking bug: the mold linker requirement
+
+**Entry date:** 2026-09-22
+
+**Done:** .cargo/config.toml requires the mold linker, present locally only via the Nix devshell. A bare GitHub Actions runner does not have it, so every cargo build/test in CI, and release-plz's own package verification, would have failed. Fixed by installing mold explicitly in both ci.yml and release-plz.yml - found by actually running the CI steps locally with a real toolchain and by watching a real release attempt fail, not by review.
+
+
+<a id="dependabot-msrv-pin-bug"></a>
+### Found and fixed Dependabot silently defeating the MSRV job
+
+**Entry date:** 2026-09-22
+
+**Done:** Dependabot opened a real PR within minutes of rustnix going live, proposing dtolnay/rust-toolchain@1.75.0 -> @1.120.0 in the msrv job - it cannot tell a version pinned as a floor to test against from a version to keep current. Closed the PR without merging and added a Dependabot ignore rule.
+
+
+<a id="publish-false-premature"></a>
+### Removed publish = false too early, then restored it
+
+**Entry date:** 2026-09-22
+
+**Done:** Removed publish = false from rhizoid's Cargo.toml on the assumption a real project should be publishable from the start. A real release attempt then correctly tried to publish an empty v0.1.0 (src/main.rs has no real functionality yet) and failed on a missing CARGO_REGISTRY_TOKEN. Restored publish = false - crates.io has no true delete, only yank, so publishing a placeholder was the wrong call regardless of the token.
+
+**Considered:** Adding a CARGO_REGISTRY_TOKEN secret to make the failed publish succeed.
+
+**Rejected:** That would have published a genuinely empty crate under the real "rhizoid" name - the missing token was not the actual problem.

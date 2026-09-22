@@ -1,2 +1,3 @@
-{"from_id":"example-two","to_id":"example-one","relation":"pairs-with","note":"shown as a relation on both pages"}
-{"from_id":"example-add-diagram","to_id":"example-one","relation":"concerns","note":"shows a backlog item linked to the concept it is about"}
+{"from_id":"additive-file-structure","to_id":"rhizoid-cutting","relation":"concerns","note":"the property that makes a rhizoid-cutting update conflict-free"}
+{"from_id":"tracking-vs-patch-branch","to_id":"additive-file-structure","relation":"pairs-with","note":"together they define what \"conflict-free\" actually means here"}
+{"from_id":"clean-patch-back","to_id":"tracking-vs-patch-branch","relation":"concerns","note":"a clean patch is only possible because the tracking branch stays pristine"}
