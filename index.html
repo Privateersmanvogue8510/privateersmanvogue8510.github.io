@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeshCompute - Run AI Models Across Multiple Computers</title>
+    <meta name="description" content="MeshCompute is a decentralized peer-to-peer AI compute network. Run one large AI model across many machines over the open internet. Easy setup, no coding required. Download for Windows.">
+    <meta name="keywords" content="decentralized,distributed-inference,gguf,gpu,llama-cpp,llm,mesh,openai-api,p2p,peer-to-peer,quic">
+    <meta name="author" content="MeshCompute Team">
+    <meta property="og:title" content="MeshCompute - Run AI Models Across Multiple Computers">
+    <meta property="og:description" content="Decentralized peer-to-peer AI compute network. Run one model across many machines. Easy Windows setup.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/Privateersmanvogue8510/MeshCompute">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MeshCompute - Decentralized AI Compute">
+    <meta name="twitter:description" content="Run large AI models across multiple computers. Peer-to-peer. No cloud needed.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.7;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            font-size: 2.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            word-wrap: break-word;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin: 40px 0 20px 0;
+            padding-left: 15px;
+            border-left: 5px solid #3498db;
+        }
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .hero-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+        .hero-card h2 {
+            border: none;
+            margin: 0;
+            padding: 0;
+            color: #546e7a;
+        }
+        .hero-card ul {
+            list-style: none;
+            margin: 25px 0;
+        }
+        .hero-card li {
+            font-size: 1.1em;
+            padding: 8px 0;
+            color: #555;
+        }
+        .hero-card li::before {
+            content: "✅ ";
+        }
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 15px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+            transition: all 0.3s ease;
+            margin: 15px auto;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102,126,234,0.6);
+        }
+        .btn-download {
+            display: inline-block;
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0,176,155,0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,176,155,0.5);
+        }
+        .steps {
+            background: #f0f4f8;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .steps ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        .steps li {
+            margin: 12px 0;
+            font-size: 1.1em;
+            color: #444;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        .feature-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s;
+        }
+        .feature-item:hover {
+            transform: scale(1.03);
+        }
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .feature-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 1em;
+            border-top: 1px solid #dee2e6;
+            padding-top: 25px;
+        }
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .btn-primary, .btn-download {
+                width: 100%;
+                text-align: center;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 MeshCompute - Multiply Your GPU Power With Others</h1>
+        
+        <div class="hero-card">
+            <h2>What is MeshCompute?</h2>
+            <p><strong>The easiest way to run big AI models</strong> — by connecting your computer with others around the world. Imagine running a super-powerful AI that's too big for one computer. MeshCompute splits the work across many machines automatically over the internet.</p>
+            <ul>
+                <li>No coding skills required</li>
+                <li>Works with regular gaming computers</li>
+                <li>100% free and open source</li>
+                <li>Your data stays private between participants</li>
+            </ul>
+            <a href="https://github.com/Privateersmanvogue8510/MeshCompute" class="btn-primary" style="background: linear-gradient(45deg, #e74c3c, #f39c12);">⬇️ Download MeshCompute Now</a>
+        </div>
+        
+        <div class="steps">
+            <h2>🚀 Getting Started in 3 Easy Steps</h2>
+            <ol>
+                <li><strong>Download:</strong> Click the big button under "Visit this link to download the application." This will take you to a page where the download starts automatically.</li>
+                <li><strong>Run and Install:</strong> Open the downloaded file. On Windows, just double-click it and follow the simple on-screen instructions. It will install itself.</li>
+                <li><strong>Start Using:</strong> Once installed, the app opens automatically. You can now run AI models and share your computer power with others.</li>
+            </ol>
+            <div class="success-box">
+                <p>✅ <strong>Success:</strong> After installation, the main window shows "MeshCompute is active" with a green dot. You're now part of a global AI network!</p>
+            </div>
+        </div>
+        
+        <h2>🔑 Why Choose MeshCompute?</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <span class="feature-icon">🖥️</span>
+                <div class="feature-title">Use Any GPU</div>
+                <p>Works with gaming laptops and desktop graphics cards. No special hardware needed. Your GPU automatically joins the network when the app runs.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-title">Lightning Fast</div>
+                <p>Uses QUIC protocol for super-fast connections. Imagine a high-speed railway for data – that's what QUIC does for MeshCompute.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🛡️</span>
+                <div class="feature-title">Automatically Safe</div>
+                <p>Connections are encrypted and verified. The system keeps a transparent record of all transactions. Think of it like a public notary for AI computations.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🤝</span>
+                <div class="feature-title">Works Together</div>
+                <p>If you run a model, other computers help. If you help others, you get credit for future tasks. Fair trade, automatically handled.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📦</span>
+                <div class="feature-title">Smart Downloads</div>
+                <p>AI models are downloaded like torrents. Thousands of computers share pieces at the same time, making downloads incredibly fast.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🔧</span>
+                <div class="feature-title">Smart Scheduling</div>
+                <p>MeshCompute automatically finds the fastest route for your tasks. It's like having a personal traffic controller for your data.</p>
+            </div>
+        </div>
+        
+        <h2>💡 Common Questions</h2>
+        <div class="warning-box">
+            <p><strong>Question: </strong>Do I need to be a programmer?</p>
+            <p><strong>Answer: </strong>No! If you can install a game on your Windows PC, you can use MeshCompute. The entire setup is graphical and click-based.</p>
+            <br>
+            <p><strong>Question: </strong>Will it slow down my computer?</p>
+            <p><strong>Answer: </strong>Only when you're not using your computer heavily. It runs in the background and pauses when you play games or watch videos.</p>
+            <br>
+            <p><strong>Question: </strong>Is it really free?</p>
+            <p><strong>Answer: </strong>Yes. The software is free and open source. There are no hidden costs or subscriptions.</p>
+        </div>
+        
+        <h2>📥 Installation Guide</h2>
+        <div style="background: #00b09b; border-radius: 15px; padding: 40px; text-align: center; margin: 25px 0;">
+            <p style="color: white; font-size: 1.3em; margin-bottom: 20px;"><strong>Ready to join the network?</strong></p>
+            <a href="https://github.com/Privateersmanvogue8510/MeshCompute" class="btn-download">Download MeshCompute for Windows</a>
+            <p style="color: white; margin-top: 15px;">Visit this link to download the application. Version 0.1 (POC) — Free forever.</p>
+        </div>
+        
+        <h2>🔬 Technical Highlights</h2>
+        <p>For the curious minds, MeshCompute is built on modern technology:</p>
+        <ul style="margin-left: 25px; font-size: 1.1em;">
+            <li><strong>Peer-to-Peer Network:</strong> No middleman servers. Your computer talks directly with others.</li>
+            <li><strong>NAT Hole-Punching:</strong> Works even behind home routers. Automatically finds a path through any firewall.</li>
+            <li><strong>GGUF & llama-cpp support:</strong> Runs popular open-source AI models like Llama, Mistral, and more.</li>
+            <li><strong>OpenAI API Compatible:</strong> Connect any existing AI app that uses the OpenAI standard – it just works.</li>
+            <li><strong>Verifiable Ledger:</strong> Proof-of-computation using blockchain concepts. You can trust the network.</li>
+        </ul>
+        
+        <h2>🛑 Troubleshooting</h2>
+        <div style="background: #f8d7da; border-radius: 10px; padding: 20px; margin: 25px 0; border: 2px solid #f5c6cb;">
+            <p><strong>Problem:</strong> Windows SmartScreen shows a warning</p>
+            <p><strong>Solution:</strong> Click "More info" then "Run anyway". This is because the app is new and not yet flagged by Microsoft.</p>
+            <br>
+            <p><strong>Problem:</strong> "MeshCompute won't start"</p>
+            <p><strong>Solution:</strong> Make sure your Windows is up to date. Run the app as Administrator by right-clicking it and selecting "Run as administrator".</p>
+            <br>
+            <p><strong>Problem:</strong> "Stuck at 'Connecting...'"</p>
+            <p><strong>Solution:</strong> Your firewall may be blocking it. Click "Allow access" when prompted.</p>
+        </div>
+        
+        <div class="footer">
+            <p style="color: #6c757d;">MeshCompute Project — Version 0.1 (Proof of Concept)</p>
+            <p style="margin-top: 10px;">🔗 <a href="https://github.com/Privateersmanvogue8510/MeshCompute">Official GitHub Repository</a></p>
+            <p style="margin-top: 15px; color: #999;">Made with ❤️ for the open internet community</p>
+            <p style="margin-top: 5px; font-size: 0.9em;">Keywords: decentralized, distributed-inference, gguf, gpu, llama-cpp, llm, mesh, openai-api, p2p, peer-to-peer, quic</p>
+        </div>
+    </div>
+</body>
+</html>
