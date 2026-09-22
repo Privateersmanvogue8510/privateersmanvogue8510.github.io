@@ -40,3 +40,13 @@
 **Note:** For org-wide issue/PR template defaults - a different, smaller thing than this repo, and not yet built.
 
 **Opened:** 2026-09-22
+
+
+<a id="dc-check-blocks-empty-recovery"></a>
+### dc.py check() blocks recovering from an all-empty table
+
+**Status:** open
+
+**Note:** check() validates the on-disk state before new SQL runs, so wiping every row in a table (to clear example content, say) leaves no way back through dc.py sql alone - the empty state always fails column-has-no-data ahead of the very INSERT that would fix it. Worked around once by seeding directly via DuckDB; the real fix is probably running check() after the SQL too, or making it tolerant of a table that is empty on both sides.
+
+**Opened:** 2026-09-22
